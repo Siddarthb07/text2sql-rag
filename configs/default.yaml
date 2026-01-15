@@ -1,0 +1,29 @@
+# Default configuration for text2sql-rag Phase 1 (schema RAG on Spider).
+
+spider:
+  # Resolved from SPIDER_DATA_DIR env var when set; else relative path.
+  data_dir: "./data/spider"
+
+indexer:
+  embedding_model: "BAAI/bge-small-en-v1.5"
+  chroma_path: "./data/chroma_schema"
+  collection_name: "spider_schema"
+  batch_size: 32
+  # Which database IDs to index; null = all found in tables.json
+  db_id_filter: null
+
+linker:
+  top_k: 12
+  # Prefer table-level hits vs column-level (both indexed)
+  include_column_chunks: true
+
+validator:
+  dialect: "sqlite"
+
+eval:
+  # Phase 1 placeholder; execution / EM wiring comes in later phases.
+  enabled: false
+
+generators:
+  # Phase 1 placeholder; LLM prompt pipeline is not wired here.
+  enabled: false

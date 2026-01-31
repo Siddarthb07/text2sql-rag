@@ -21,9 +21,16 @@ validator:
   dialect: "sqlite"
 
 eval:
-  # Phase 1 placeholder; execution / EM wiring comes in later phases.
-  enabled: false
+  enabled: true
 
 generators:
-  # Phase 1 placeholder; LLM prompt pipeline is not wired here.
-  enabled: false
+  enabled: true
+  provider: echo
+  groq_model: "llama-3.1-70b-versatile"
+
+fewshot:
+  chroma_path: "./data/chroma_examples"
+  collection_name: "spider_examples"
+  json_file: "train.json"
+  max_examples: 400
+  batch_size: 64

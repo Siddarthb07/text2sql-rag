@@ -19,6 +19,9 @@ dependencies = [
   "python-dotenv>=1.0.0",
 ]
 
+[project.scripts]
+text2sql-rag-demo = "text2sql_rag.cli_demo:main"
+
 [project.optional-dependencies]
 dev = [
   "pytest>=7.4.0",

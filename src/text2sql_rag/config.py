@@ -30,11 +30,21 @@ class ValidatorConfig(BaseModel):
 
 
 class EvalConfig(BaseModel):
-    enabled: bool = False
+    enabled: bool = True
 
 
 class GeneratorsConfig(BaseModel):
-    enabled: bool = False
+    enabled: bool = True
+    provider: str = "echo"  # echo | groq (needs GROQ_API_KEY)
+    groq_model: str = "llama-3.1-70b-versatile"
+
+
+class FewShotConfig(BaseModel):
+    chroma_path: str = "./data/chroma_examples"
+    collection_name: str = "spider_examples"
+    json_file: str = "train.json"
+    max_examples: int = 400
+    batch_size: int = 64
 
 
 class AppConfig(BaseModel):
@@ -44,6 +54,7 @@ class AppConfig(BaseModel):
     validator: ValidatorConfig = Field(default_factory=ValidatorConfig)
     eval: EvalConfig = Field(default_factory=EvalConfig)
     generators: GeneratorsConfig = Field(default_factory=GeneratorsConfig)
+    fewshot: FewShotConfig = Field(default_factory=FewShotConfig)
 
 
 def load_config(path: Optional[Union[str, Path]] = None) -> AppConfig:

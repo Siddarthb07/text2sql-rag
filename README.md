@@ -21,6 +21,24 @@ bash scripts/smoke_test.sh
 
 Set `SPIDER_DATA_DIR` (see `.env.example`) if you unpack Spider somewhere other than `./data/spider`.
 
+### Phase 2 demo CLI
+
+Run indexing + one example answer (echo or Groq) from the activated env:
+
+```bash
+python -m text2sql_rag.cli_demo --build-indexes
+# After pip install -e ., equivalently:
+text2sql-rag-demo --build-indexes
+```
+
+- **Echo** (`generators.provider: echo` in `configs/default.yaml`) returns SQL parsed from the top retrieved few-shot document (expects a `Question:` / `SQL:` chunk from the few-shot indexer).
+- **Groq** (`generators.provider: groq`): set **`GROQ_API_KEY`** in your environment before running (`--provider groq` overrides the YAML provider for `cli_demo`).
+
+### Spider data layout expected on disk
+
+- `database/<db_id>/*.sqlite` (Spider’s per-database SQLite files, typically `{db_id}.sqlite`)
+- **`train.json`** (and optional `tables.json`) at the Spider root referenced by `spider.data_dir` / `SPIDER_DATA_DIR`
+
 ### Windows note
 
 Use Git Bash or WSL to run the `.sh` scripts, or run the equivalent commands manually (see script contents).

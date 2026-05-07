@@ -34,6 +34,25 @@ text2sql-rag-demo --build-indexes
 - **Echo** (`generators.provider: echo` in `configs/default.yaml`) returns SQL parsed from the top retrieved few-shot document (expects a `Question:` / `SQL:` chunk from the few-shot indexer).
 - **Groq** (`generators.provider: groq`): set **`GROQ_API_KEY`** in your environment before running (`--provider groq` overrides the YAML provider for `cli_demo`).
 
+### Phase 3 — benchmark + Gradio
+
+Aggregate metrics over a shuffled slice of `train.json`:
+
+```bash
+python -m text2sql_rag.benchmark_run --limit 40 --seed 1
+# outputs results/benchmark_summary.{json,md}
+```
+
+Optional UI (install `pip install -e ".[demo]"`):
+
+```bash
+python demo/gradio_phase3.py
+```
+
+Docs: [`docs/benchmark.md`](docs/benchmark.md), HF outline [`docs/huggingface_space.md`](docs/huggingface_space.md), static overview [`docs/DEMO.md`](docs/DEMO.md).
+
+![pipeline overview](docs/assets/demo/pipeline_overview.png)
+
 ### Spider data layout expected on disk
 
 - `database/<db_id>/*.sqlite` (Spider’s per-database SQLite files, typically `{db_id}.sqlite`)
@@ -51,10 +70,11 @@ Use Git Bash or WSL to run the `.sh` scripts, or run the equivalent commands man
 - `scripts/smoke_test.sh` — quick sanity checks after install
 - `tests/` — indexer, linker, validator tests (use minimal fixtures; full Spider optional)
 
-## Phase 1 scope
+## Phase roadmap
 
-- **In scope:** schema loading from `tables.json`, dense retrieval of schema snippets, SQLite syntax validation stubs.
-- **Out of scope (placeholders):** LLM SQL generation, leaderboard execution accuracy, train/eval loops.
+- **Phase 1–2:** shipped in `src/text2sql_rag/` (indexer, linker, validator, few-shot, generators, CLI).
+- **Phase 3:** `benchmark_run` + Gradio shell + docs above.
+- **Phase 4 (optional):** leaderboard-scale sweeps / hosted demo polish.
 
 ## License
 

@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "text2sql-rag"
 version = "0.1.0"
-description = "Phase 1: Spider-backed schema indexing, linking, and SQL validation utilities."
+description = "Spider-backed schema RAG: indexing, few-shot retrieval, SQL generation (echo/Groq), validation, execution checks, benchmarks."
 readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "MIT" }
@@ -21,11 +21,15 @@ dependencies = [
 
 [project.scripts]
 text2sql-rag-demo = "text2sql_rag.cli_demo:main"
+text2sql-rag-benchmark = "text2sql_rag.benchmark_run:main"
 
 [project.optional-dependencies]
 dev = [
   "pytest>=7.4.0",
   "gdown>=5.1.0",
+]
+demo = [
+  "gradio>=4.0.0",
 ]
 
 [tool.setuptools.packages.find]

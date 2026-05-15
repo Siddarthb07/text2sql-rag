@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 """
-Backward-compatible launcher — delegates to the phased dashboard.
+Phased Gradio UI for text2sql-rag (Phases 1–4 tabs).
 
-Prefer:
+Run from repo root (after `pip install -e ".[demo]"`):
 
     python demo/app_gradio.py
+
+Equivalent console script (after install):
+
+    text2sql-rag-ui
 """
 
 from __future__ import annotations
@@ -19,5 +23,10 @@ if str(SRC) not in sys.path:
 
 from text2sql_rag.gradio_dashboard import launch  # noqa: E402
 
-if __name__ == "__main__":
+
+def main() -> None:
     launch()
+
+
+if __name__ == "__main__":
+    main()

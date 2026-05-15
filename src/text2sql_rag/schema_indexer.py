@@ -18,7 +18,23 @@ class BGESmallEmbeddingFunction(EmbeddingFunction):
     def __init__(self, model_name: str) -> None:
         from sentence_transformers import SentenceTransformer
 
+        self._model_name = model_name
         self._model = SentenceTransformer(model_name)
+
+    @staticmethod
+    def name() -> str:
+        """Stable id for Chroma (must be callable without instance)."""
+        return "text2sql_rag_bge_sentence_transformer"
+
+    def get_config(self) -> dict[str, Any]:
+        return {"model_name": self._model_name}
+
+    @staticmethod
+    def build_from_config(config: dict[str, Any]) -> BGESmallEmbeddingFunction:
+        model_name = config.get("model_name")
+        if not model_name:
+            raise ValueError("model_name required to rebuild BGESmallEmbeddingFunction")
+        return BGESmallEmbeddingFunction(str(model_name))
 
     def __call__(self, input: Documents) -> Embeddings:
         texts = list(input)

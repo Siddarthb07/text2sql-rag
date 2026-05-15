@@ -22,6 +22,7 @@ dependencies = [
 [project.scripts]
 text2sql-rag-demo = "text2sql_rag.cli_demo:main"
 text2sql-rag-benchmark = "text2sql_rag.benchmark_run:main"
+text2sql-rag-ui = "text2sql_rag.gradio_dashboard:main"
 
 [project.optional-dependencies]
 dev = [

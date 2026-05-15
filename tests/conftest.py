@@ -5,6 +5,7 @@ import json
 import math
 import os
 from pathlib import Path
+from typing import Any
 
 import pytest
 from chromadb.api.types import Documents, EmbeddingFunction, Embeddings
@@ -15,6 +16,18 @@ class DeterministicEmbeddingFunction(EmbeddingFunction):
 
     def __init__(self, model_name: str = "") -> None:
         self._dim = 384
+        self._model_name = model_name
+
+    @staticmethod
+    def name() -> str:
+        return "text2sql_rag_deterministic_sha256"
+
+    def get_config(self) -> dict[str, Any]:
+        return {"model_name": self._model_name, "dim": self._dim}
+
+    @staticmethod
+    def build_from_config(config: dict[str, Any]) -> DeterministicEmbeddingFunction:
+        return DeterministicEmbeddingFunction(str(config.get("model_name") or ""))
 
     def __call__(self, input: Documents) -> Embeddings:
         texts = list(input)

@@ -1,6 +1,8 @@
 # text2sql-rag
 
-Phase 1 scaffold for **schema-first retrieval** over the [Spider](https://yale-lily.github.io/spider) text-to-SQL dataset: load public schema files, embed schema text with **BAAI/bge-small-en-v1.5**, store vectors in **Chroma**, link natural-language questions to relevant tables/columns, and validate candidate **SQLite** SQL with **SQLGlot**.
+Multi-phase **schema-first RAG** over [Spider](https://yale-lily.github.io/spider): Chroma-backed schema + few-shot retrieval, **SQLGlot** validation, echo or **Groq** generation, SQLite execution checks, optional benchmarks, and a **phased Gradio dashboard** (`demo/app_gradio.py`). Orientation: [`docs/DEEP_DIVE.md`](docs/DEEP_DIVE.md).
+
+Embeddings default to **BAAI/bge-small-en-v1.5** via Sentence Transformers (tests stub deterministic vectors unless `TEXT2SQL_USE_REAL_EMBEDDINGS=1`).
 
 This repository uses only **public Spider materials and standard open techniques** (dataset hosting, embedding models, vector stores). No proprietary or employer-specific artifacts.
 
@@ -43,13 +45,16 @@ python -m text2sql_rag.benchmark_run --limit 40 --seed 1
 # outputs results/benchmark_summary.{json,md}
 ```
 
-Optional UI (install `pip install -e ".[demo]"`):
+**Gradio UI** (install `pip install -e ".[demo]"`):
 
 ```bash
-python demo/gradio_phase3.py
+python demo/app_gradio.py
+# or: text2sql-rag-ui
 ```
 
-Docs: [`docs/benchmark.md`](docs/benchmark.md), HF outline [`docs/huggingface_space.md`](docs/huggingface_space.md), static overview [`docs/DEMO.md`](docs/DEMO.md).
+See [`demo/README.md`](demo/README.md). Legacy alias: `python demo/gradio_phase3.py` (same dashboard).
+
+Docs: [`docs/benchmark.md`](docs/benchmark.md), HF outline [`docs/huggingface_space.md`](docs/huggingface_space.md), static overview [`docs/DEMO.md`](docs/DEMO.md), narrative [`docs/DEEP_DIVE.md`](docs/DEEP_DIVE.md).
 
 ![pipeline overview](docs/assets/demo/pipeline_overview.png)
 
@@ -64,11 +69,11 @@ Use Git Bash or WSL to run the `.sh` scripts, or run the equivalent commands man
 
 ## Layout
 
-- `src/text2sql_rag/` — loaders, schema models, Chroma indexer, linker, SQL validator, generator/eval stubs
-- `configs/default.yaml` — defaults for paths, model name, Chroma collection
-- `scripts/download_spider.sh` — fetch Spider zip (Google Drive mirror via `gdown`)
-- `scripts/smoke_test.sh` — quick sanity checks after install
-- `tests/` — indexer, linker, validator tests (use minimal fixtures; full Spider optional)
+- `src/text2sql_rag/` — Spider loaders, schema models, Chroma indexers, linker, validator, few-shot store, SQL generator, pipeline + benchmark CLI
+- `configs/default.yaml` — paths, embedding model, Chroma collections, generator provider
+- `scripts/` — Spider download, smoke checks, `capture_demo_assets.py` for docs PNGs
+- `demo/` — phased Gradio dashboard (`app_gradio.py`) + legacy launcher name
+- `tests/` — indexer, linker, validator tests (fixtures; full Spider optional)
 
 ## Phase roadmap
 
